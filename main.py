@@ -1,12 +1,12 @@
-import time
-
 import flet as ft
-from flet_core import NavigationBarLabelBehavior
+import pyautogui
 
 
 def main(page: ft.Page):
-    page.window_width = 460
-    page.window_height = 780
+    width, height = pyautogui.size()
+    page.window_width = width
+    page.window_height = height
+    page.padding = height * 0.05
     page.title = "NavigationBar Example"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.update()
@@ -32,10 +32,58 @@ def main(page: ft.Page):
         bgcolor='#9da6f2',
         label_behavior=ft.NavigationBarLabelBehavior.ALWAYS_HIDE,
         on_change=get_page,
-        height=page.window_height / 12,
+        height=page.window_height * 0.10,
     )
 
-    tab_1 = ft.Text("Tab 1", size=30, visible=True)
+    tab_1 = ft.ResponsiveRow(
+            [
+                ft.Container(ft.ElevatedButton(
+                        content=ft.Row([
+                                ft.Text("Урок №1: \nЧисла",
+                                        max_lines=2,
+                                        expand=True,
+                                        overflow=ft.TextOverflow.ELLIPSIS),
+                                ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black",),
+                            ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            height=page.window_height * 0.07
+                        ))),
+                ft.Container(ft.ElevatedButton(
+                        content=ft.Row([
+                            ft.Text("Урок №2: \nЧисла",
+                                    max_lines=2,
+                                    expand=True,
+                                    overflow=ft.TextOverflow.ELLIPSIS),
+                            ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black", ),
+                        ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            height=page.window_height * 0.07
+                        ))),
+                ft.Container(ft.ElevatedButton(
+                        content=ft.Row([
+                            ft.Text("Урок №3: \nЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧисла",
+                                    max_lines=2,
+                                    expand=True,
+                                    overflow=ft.TextOverflow.ELLIPSIS),
+                            ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE, color="black", ),
+                        ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            height=page.window_height * 0.07
+                        ))),
+                ft.Container(ft.ElevatedButton(
+                        content=ft.Row([
+                            ft.Text(f"Урок №4: \nЧисла Этот тест мог бы быть осмысленным, но таковым не является",
+                                    max_lines=2,
+                                    expand=True,
+                                    overflow=ft.TextOverflow.ELLIPSIS),
+                            ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE, color="black", ),
+                        ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            height=page.window_height * 0.07
+                        ))),
+            ])
+
+    # tab_1 = ft.Text("Tab 1", size=30, visible=True)
     tab_2 = ft.Text("Tab 2", size=30, visible=False)
     tab_3 = ft.Text("Tab 3", size=30, visible=False)
     tab_4 = ft.Text("Tab 4", size=30, visible=False)
