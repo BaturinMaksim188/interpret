@@ -4,9 +4,10 @@ from database.models.user import User
 
 
 class UserBook(BaseModel):
-    id = AutoField(),
-    name = CharField(max_length=256, null=False),
-    content = TextField(null=False),
-    bookmark = IntegerField(null=True),
+    id = AutoField()
+    name = CharField(max_length=256, null=False)
+    content = TextField(null=False)
+    bookmark = IntegerField(null=True)
+    format = CharField(max_length=256, null=True)
 
     user = ForeignKeyField(User, backref='user')

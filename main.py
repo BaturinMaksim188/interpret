@@ -1,15 +1,18 @@
 import flet as ft
 import pyautogui
+
+from database.database import UserBook, User
 from tools.books import pick_files_result
 
 
 def main(page: ft.Page):
     width, height = pyautogui.size()
-    page.window_width = width
-    page.window_height = height
+    page.window_width = width * 0.75
+    page.window_height = height * 0.75
     page.padding = height * 0.05
-    page.title = "NavigationBar Example"
+    page.title = "Interpret"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    # main_user = User.select().where()
     page.update()
 
     def get_page(e):
@@ -40,58 +43,81 @@ def main(page: ft.Page):
     pick_files_dialog = ft.FilePicker(on_result=pick_files_result)
     page.overlay.append(pick_files_dialog)
 
+    # Отображение динамическим списком
+    books = ft.ResponsiveRow([ft.Container(ft.ElevatedButton(
+        content=ft.Row([
+            ft.Text("Урок №1: \nЧисла",
+                    max_lines=2,
+                    expand=True,
+                    overflow=ft.TextOverflow.ELLIPSIS),
+            ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black", ),
+        ],
+            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            height=page.window_height * 0.07
+        ))) for book in UserBook.select().where(UserBook.format == 'txt')],)
+
     tab_1 = ft.ResponsiveRow(
         [
-            ft.Container(ft.ElevatedButton(
-                content=ft.Row([
-                    ft.Text("Урок №1: \nЧисла",
-                            max_lines=2,
-                            expand=True,
-                            overflow=ft.TextOverflow.ELLIPSIS),
-                    ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black", ),
-                ],
-                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                    height=page.window_height * 0.07
-                ))),
-            ft.Container(ft.ElevatedButton(
-                content=ft.Row([
-                    ft.Text("Урок №2: \nЧисла",
-                            max_lines=2,
-                            expand=True,
-                            overflow=ft.TextOverflow.ELLIPSIS),
-                    ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black", ),
-                ],
-                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                    height=page.window_height * 0.07
-                ))),
-            ft.Container(ft.ElevatedButton(
-                content=ft.Row([
-                    ft.Text("Урок №3: \nЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧисла",
-                            max_lines=2,
-                            expand=True,
-                            overflow=ft.TextOverflow.ELLIPSIS),
-                    ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE, color="black", ),
-                ],
-                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                    height=page.window_height * 0.07
-                ))),
-            ft.Container(ft.ElevatedButton(
-                content=ft.Row([
-                    ft.Text(f"Урок №4: \nЧисла Этот тест мог бы быть осмысленным, но таковым не является",
-                            max_lines=2,
-                            expand=True,
-                            overflow=ft.TextOverflow.ELLIPSIS),
-                    ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE, color="black", ),
-                ],
-                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                    height=page.window_height * 0.07
-                ))),
+            books,
             ft.FilledTonalButton("Добавить книгу", icon=ft.icons.UPLOAD_OUTLINED, height=page.window_height * 0.05,
                                  visible=True,
                                  on_click=lambda _: pick_files_dialog.pick_files(
-                                     allow_multiple=True
-                                 ),),
+                                     allow_multiple=False
+                                 ), ),
         ])
+
+    # tab_1 = ft.ResponsiveRow(
+    #     [
+    #         ft.Container(ft.ElevatedButton(
+    #             content=ft.Row([
+    #                 ft.Text("Урок №1: \nЧисла",
+    #                         max_lines=2,
+    #                         expand=True,
+    #                         overflow=ft.TextOverflow.ELLIPSIS),
+    #                 ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black", ),
+    #             ],
+    #                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
+    #                 height=page.window_height * 0.07
+    #             ))),
+    #         ft.Container(ft.ElevatedButton(
+    #             content=ft.Row([
+    #                 ft.Text("Урок №2: \nЧисла",
+    #                         max_lines=2,
+    #                         expand=True,
+    #                         overflow=ft.TextOverflow.ELLIPSIS),
+    #                 ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE_SHARP, color="black", ),
+    #             ],
+    #                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
+    #                 height=page.window_height * 0.07
+    #             ))),
+    #         ft.Container(ft.ElevatedButton(
+    #             content=ft.Row([
+    #                 ft.Text("Урок №3: \nЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧислаЧисла",
+    #                         max_lines=2,
+    #                         expand=True,
+    #                         overflow=ft.TextOverflow.ELLIPSIS),
+    #                 ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE, color="black", ),
+    #             ],
+    #                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
+    #                 height=page.window_height * 0.07
+    #             ))),
+    #         ft.Container(ft.ElevatedButton(
+    #             content=ft.Row([
+    #                 ft.Text(f"Урок №4: \nЧисла Этот тест мог бы быть осмысленным, но таковым не является",
+    #                         max_lines=2,
+    #                         expand=True,
+    #                         overflow=ft.TextOverflow.ELLIPSIS),
+    #                 ft.Icon(name=ft.icons.FILE_DOWNLOAD_DONE, color="black", ),
+    #             ],
+    #                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
+    #                 height=page.window_height * 0.07
+    #             ))),
+    #         ft.FilledTonalButton("Добавить книгу", icon=ft.icons.UPLOAD_OUTLINED, height=page.window_height * 0.05,
+    #                              visible=True,
+    #                              on_click=lambda _: pick_files_dialog.pick_files(
+    #                                  allow_multiple=True
+    #                              ), ),
+    #     ])
 
     # tab_1 = ft.Text("Tab 1", size=30, visible=True)
     tab_2 = ft.Text("Tab 2", size=30, visible=False)

@@ -1,0 +1,2 @@
+http://5.188.65.184:8999/empakt/odata/standard.odata/Document_ПоступлениеТоваровУслуг?$filter=Date ge datetime'2023-11-07T00:00:00' and Date le datetime'2023-12-01T23:59:59'&$top=1000&$skip=0&$format=json
+http://5.188.65.184:8999/alpha-design/odata/standard.odata/Document_ПоступлениеТоваровУслуг?$filter=Date ge datetime'2020-07-13T00:00:00' and Date le datetime'2023-12-01T23:59:59'&$top=1000&$skip=0&$format=json
