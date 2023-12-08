@@ -22,8 +22,10 @@ def load_user_book(name_, format_, text_):
         )
 
 
-def extract_text_from_txt(txt_path):
-    with open(txt_path, 'r', encoding='utf-8') as file:
+def extract_text_from_txt(e):
+    # print(e.__dict__)
+    print(e.files[0].path)
+    with open(e.files[0].path, 'r', encoding='utf-8') as file:
         text = file.read()
     return text
 
@@ -66,10 +68,11 @@ def pick_files_result(e: ft.FilePickerResultEvent):
     if format_ in ['fb2', 'epub', 'txt', 'rtf', 'pdf', ]:
 
         if format_ == 'txt':
-            text_ = extract_text_from_txt(e.files[0].path)
+            print(e.files)
+            print(e.files[0].path)
+            text_ = extract_text_from_txt(e)
             load_user_book(name_, format_, text_)
-            e.control.update()
-            e.page.update()
+
 
         if format_ == 'pdf':
             text_ = extract_text_from_pdf(e.files[0].path)
